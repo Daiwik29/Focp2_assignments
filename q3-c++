@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+
+bool isPalindrome(const std::string& str) {
+    std::string filteredStr;
+    for (char ch : str) {
+        if (ch != ' ') {
+            filteredStr += (ch >= 'A' && ch <= 'Z') ? (ch + 32) : ch;
+        }
+    }
+    std::string reversedStr = filteredStr;
+    for (size_t i = 0, j = filteredStr.size() - 1; i < j; ++i, --j) {
+        if (filteredStr[i] != filteredStr[j]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void displayCharacterFrequency(const std::string& str) {
+    int frequency[26] = {0};
+    for (char ch : str) {
+        if (ch != ' ') {
+            char lowerCh = (ch >= 'A' && ch <= 'Z') ? (ch + 32) : ch;
+            if (lowerCh >= 'a' && lowerCh <= 'z') {
+                frequency[lowerCh - 'a']++;
+            }
+        }
+    }
+    std::cout << "Character frequencies:\n";
+    for (int i = 0; i < 26; ++i) {
+        if (frequency[i] > 0) {
+            std::cout << static_cast<char>('a' + i) << ": " << frequency[i] << std::endl;
+        }
+    }
+}
+
+std::string replaceVowels(const std::string& str, char replacement) {
+    std::string result;
+    for (char ch : str) {
+        char lowerCh = (ch >= 'A' && ch <= 'Z') ? (ch + 32) : ch;
+        if (lowerCh == 'a' || lowerCh == 'e' || lowerCh == 'i' || lowerCh == 'o' || lowerCh == 'u') {
+            result += replacement;
+        } else {
+            result += ch;
+        }
+    }
+    return result;
+}
+
+int main() {
+    std::string input;
+    std::cout << "Enter a string: ";
+    std::getline(std::cin, input);
+
+    if (isPalindrome(input)) {
+        std::cout << "The string is a palindrome.\n";
+    } else {
+        std::cout << "The string is not a palindrome.\n";
+    }
+
+    displayCharacterFrequency(input);
+
+    char replacement;
+    std::cout << "Enter a character to replace vowels: ";
+    std::cin >> replacement;
+    std::string modifiedString = replaceVowels(input, replacement);
+    std::cout << "String after replacing vowels: " << modifiedString << std::endl;
+
+    return 0;
+}
