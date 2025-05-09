@@ -1,0 +1,171 @@
+#include <iostream>
+using namespace std;
+
+class Person {
+public:
+    char name[50];
+    int age;
+    char id[20];
+    char contact[30];
+
+    Person(const char* n, int a, const char* i, const char* c) {
+        strcpy(name, n);
+        age = a;
+        strcpy(id, i);
+        strcpy(contact, c);
+    }
+
+    virtual void displayDetails() {
+        cout << name << " " << age << " " << id << " " << contact << endl;
+    }
+
+    virtual float calculatePayment() {
+        return 0;
+    }
+};
+
+class Student : public Person {
+public:
+    char enrollmentDate[20];
+    char program[30];
+    float gpa;
+
+    Student(const char* n, int a, const char* i, const char* c, const char* e, const char* p, float g)
+        : Person(n, a, i, c) {
+        strcpy(enrollmentDate, e);
+        strcpy(program, p);
+        gpa = g;
+    }
+
+    void displayDetails() {
+        Person::displayDetails();
+        cout << enrollmentDate << " " << program << " " << gpa << endl;
+    }
+
+    float calculatePayment() {
+        return 10000;
+    }
+};
+
+class UndergraduateStudent : public Student {
+public:
+    char major[30];
+    char minor[30];
+    char gradDate[20];
+
+    UndergraduateStudent(const char* n, int a, const char* i, const char* c, const char* e, const char* p, 
+                        float g, const char* m, const char* mn, const char* gDate)
+        : Student(n, a, i, c, e, p, g) {
+        strcpy(major, m);
+        strcpy(minor, mn);
+        strcpy(gradDate, gDate);
+    }
+
+    void displayDetails() {
+        Student::displayDetails();
+        cout << "Major: " << major << " Minor: " << minor << " Grad Date: " << gradDate << endl;
+    }
+};
+
+class GraduateStudent : public Student {
+public:
+    char researchTopic[50];
+    char thesisTitle[50];
+    char advisor[50];
+
+    GraduateStudent(const char* n, int a, const char* i, const char* c, const char* e, const char* p, 
+                    float g, const char* r, const char* t, const char* a)
+        : Student(n, a, i, c, e, p, g) {
+        strcpy(researchTopic, r);
+        strcpy(thesisTitle, t);
+        strcpy(advisor, a);
+    }
+
+    void displayDetails() {
+        Student::displayDetails();
+        cout << "Research: " << researchTopic << " Thesis: " << thesisTitle << " Advisor: " << advisor << endl;
+    }
+};
+
+class Professor : public Person {
+public:
+    char department[30];
+    char specialization[30];
+    char hireDate[20];
+
+    Professor(const char* n, int a, const char* i, const char* c, const char* d, const char* s, const char* h)
+        : Person(n, a, i, c) {
+        strcpy(department, d);
+        strcpy(specialization, s);
+        strcpy(hireDate, h);
+    }
+
+    void displayDetails() {
+        Person::displayDetails();
+        cout << department << " " << specialization << " " << hireDate << endl;
+    }
+
+    float calculatePayment() {
+        return 50000;
+    }
+};
+
+class AssistantProfessor : public Professor {
+public:
+    AssistantProfessor(const char* n, int a, const char* i, const char* c, const char* d, const char* s, const char* h)
+        : Professor(n, a, i, c, d, s, h) {}
+
+    void displayDetails() {
+        Professor::displayDetails();
+        cout << "Assistant Professor" << endl;
+    }
+
+    float calculatePayment() {
+        return 40000;
+    }
+};
+
+class AssociateProfessor : public Professor {
+public:
+    AssociateProfessor(const char* n, int a, const char* i, const char* c, const char* d, const char* s, const char* h)
+        : Professor(n, a, i, c, d, s, h) {}
+
+    void displayDetails() {
+        Professor::displayDetails();
+        cout << "Associate Professor" << endl;
+    }
+
+    float calculatePayment() {
+        return 60000;
+    }
+};
+
+class FullProfessor : public Professor {
+public:
+    FullProfessor(const char* n, int a, const char* i, const char* c, const char* d, const char* s, const char* h)
+        : Professor(n, a, i, c, d, s, h) {}
+
+    void displayDetails() {
+        Professor::displayDetails();
+        cout << "Full Professor" << endl;
+    }
+
+    float calculatePayment() {
+        return 80000;
+    }
+};
+
+int main() {
+    UndergraduateStudent u1("Amit", 20, "S01", "123456", "2023", "BSc", 3.5, "Physics", "Math", "2027");
+    GraduateStudent g1("Neha", 21, "S02", "789012", "2023", "MSc", 3.9, "Quantum Physics", "Quantum Computing", "Dr. Roy");
+    AssistantProfessor ap1("Dr. Roy", 40, "P01", "roy@mail.com", "CS", "AI", "2010");
+    AssociateProfessor ap2("Dr. Mehta", 45, "P02", "mehta@mail.com", "Math", "Stats", "2012");
+    FullProfessor fp1("Dr. Kumar", 50, "P03", "kumar@mail.com", "Physics", "Theory", "2005");
+
+    u1.displayDetails();
+    g1.displayDetails();
+    ap1.displayDetails();
+    ap2.displayDetails();
+    fp1.displayDetails();
+
+    return 0;
