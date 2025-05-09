@@ -1,0 +1,168 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class UniversitySystemException {
+public:
+    virtual const char* what() const {
+        return "University System Exception";
+    }
+};
+
+class EnrollmentException : public UniversitySystemException {
+public:
+    const char* what() const override {
+        return "Enrollment Error";
+    }
+};
+
+class GradeException : public UniversitySystemException {
+public:
+    const char* what() const override {
+        return "Grade Error";
+    }
+};
+
+class PaymentException : public UniversitySystemException {
+public:
+    const char* what() const override {
+        return "Payment Error";
+    }
+};
+
+class Person {
+public:
+    string name;
+    int age;
+    string id;
+    string contact;
+
+    Person(string n, int a, string i, string c) {
+        name = n;
+        age = a;
+        id = i;
+        contact = c;
+    }
+
+    virtual void displayDetails() {
+        cout << name << " " << age << " " << id << " " << contact << endl;
+    }
+
+    virtual float calculatePayment() {
+        return 0;
+    }
+};
+
+class Student : public Person {
+public:
+    string enrollmentDate;
+    string program;
+    float gpa;
+
+    Student(string n, int a, string i, string c, string e, string p, float g)
+        : Person(n, a, i, c) {
+        enrollmentDate = e;
+        program = p;
+        gpa = g;
+    }
+
+    void displayDetails() {
+        Person::displayDetails();
+        cout << enrollmentDate << " " << program << " " << gpa << endl;
+    }
+
+    float calculatePayment() {
+        return 10000;
+    }
+};
+
+class Professor : public Person {
+public:
+    string department;
+    string specialization;
+    string hireDate;
+
+    Professor(string n, int a, string i, string c, string d, string s, string h)
+        : Person(n, a, i, c) {
+        department = d;
+        specialization = s;
+        hireDate = h;
+    }
+
+    void displayDetails() {
+        Person::displayDetails();
+        cout << department << " " << specialization << " " << hireDate << endl;
+    }
+
+    float calculatePayment() {
+        return 50000;
+    }
+};
+
+class EnrollmentManager {
+public:
+    vector<string> students;
+
+    void enrollStudent(string id) {
+        if (students.size() >= 2) throw EnrollmentException();
+        students.push_back(id);
+    }
+
+    void dropStudent(string id) {
+        for (int i = 0; i < students.size(); i++) {
+            if (students[i] == id) {
+                students.erase(students.begin() + i);
+                break;
+            }
+        }
+    }
+
+    int getEnrollmentCount() {
+        return students.size();
+    }
+};
+
+class GradeBook {
+public:
+    vector<string> studentIDs;
+    vector<float> grades;
+
+    void addGrade(string id, float grade) {
+        studentIDs.push_back(id);
+        grades.push_back(grade);
+    }
+
+    float calculateAverageGrade() {
+        float total = 0;
+        for (int i = 0; i < grades.size(); i++) total += grades[i];
+        return grades.size() ? total / grades.size() : 0;
+    }
+};
+
+int main() {
+    try {
+        Student s1("Amit", 20, "S01", "123456", "2023", "BSc", 3.5);
+        Student s2("Neha", 21, "S02", "789012", "2023", "BCom", 3.8);
+        Professor p1("Dr. Roy", 50, "P01", "roy@mail.com", "CS", "AI", "2010");
+        Professor p2("Dr. Mehta", 45, "P02", "mehta@mail.com", "Math", "Stats", "2012");
+
+        EnrollmentManager em;
+        em.enrollStudent("S01");
+        em.enrollStudent("S02");
+
+        GradeBook g;
+        g.addGrade("S01", 80);
+        g.addGrade("S02", 90);
+
+        s1.displayDetails();
+        s2.displayDetails();
+        p1.displayDetails();
+        p2.displayDetails();
+
+        em.enrollStudent("S03"); // Will throw EnrollmentException
+    } catch (const UniversitySystemException& e) {
+        cout << e.what() << endl;
+    }
+
+    return 0;
+}
