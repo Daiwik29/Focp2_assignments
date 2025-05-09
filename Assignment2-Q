@@ -1,0 +1,85 @@
+#include <iostream>
+using namespace std;
+
+class Person {
+public:
+    char name[50];
+    int age;
+    char id[20];
+    char contact[30];
+
+    Person(const char* n, int a, const char* i, const char* c) {
+        strcpy(name, n);
+        age = a;
+        strcpy(id, i);
+        strcpy(contact, c);
+    }
+
+    virtual void displayDetails() {
+        cout << name << " " << age << " " << id << " " << contact << endl;
+    }
+
+    virtual float calculatePayment() {
+        return 0;
+    }
+};
+
+class Student : public Person {
+public:
+    char enrollmentDate[20];
+    char program[30];
+    float gpa;
+
+    Student(const char* n, int a, const char* i, const char* c, const char* e, const char* p, float g)
+        : Person(n, a, i, c) {
+        strcpy(enrollmentDate, e);
+        strcpy(program, p);
+        gpa = g;
+    }
+
+    void displayDetails() {
+        Person::displayDetails();
+        cout << enrollmentDate << " " << program << " " << gpa << endl;
+    }
+
+    float calculatePayment() {
+        return 10000;
+    }
+};
+
+class Professor : public Person {
+public:
+    char department[30];
+    char specialization[30];
+    char hireDate[20];
+
+    Professor(const char* n, int a, const char* i, const char* c, const char* d, const char* s, const char* h)
+        : Person(n, a, i, c) {
+        strcpy(department, d);
+        strcpy(specialization, s);
+        strcpy(hireDate, h);
+    }
+
+    void displayDetails() {
+        Person::displayDetails();
+        cout << department << " " << specialization << " " << hireDate << endl;
+    }
+
+    float calculatePayment() {
+        return 50000;
+    }
+};
+
+int main() {
+    Student s1("Amit", 20, "S01", "123456", "2023", "BSc", 3.5);
+    Student s2("Neha", 21, "S02", "789012", "2023", "BCom", 3.8);
+    Professor p1("Dr. Roy", 50, "P01", "roy@mail.com", "CS", "AI", "2010");
+    Professor p2("Dr. Mehta", 45, "P02", "mehta@mail.com", "Math", "Stats", "2012");
+
+    s1.displayDetails();
+    s2.displayDetails();
+    p1.displayDetails();
+    p2.displayDetails();
+
+    return 0;
+}
